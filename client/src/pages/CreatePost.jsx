@@ -13,9 +13,14 @@ const CreatePost = () => {
 
   const handleSubmit = () => {};
   const handleChange = (e) => {
+    setForm({...form, [e.target.name] : e.target.value})
     
   };
-  const handleSurpise = (e) => {};
+  const handleSurpise = (e) => {
+    e.preventDefault()
+    setForm({...form, prompt: getRandomPrompt(form.prompt)})
+
+  };
 
   const handleGenerate = (e) => {};
 
