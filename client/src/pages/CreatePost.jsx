@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { FormField, Loader } from "../components";
 import { getRandomPrompt } from "../utils";
-import { useNavigate } from "react-router-dom";
+import { json, useNavigate } from "react-router-dom";
 import preview from "../assets/preview.png";
 
 const CreatePost = () => {
@@ -22,7 +22,27 @@ const CreatePost = () => {
 
   };
 
-  const handleGenerate = (e) => {};
+  const handleGenerate = async (e) => {
+    if(form?.prompt){
+      try {
+        setGeneratingImage(true);
+        const response = await fetch('http://localhost:5000/api/v1/dall-e/generate-image',{
+          method: 'POST',
+          headers: {'Content-Type' : 'application/json'},
+          body: JSON.stringify({prompt: form?.prompt})
+        })
+
+
+        const data= await response.json();
+        setForm({...form, image: `data:image/jpeg;base64,${data?.photo}`})
+        setGeneratingImage(false);
+        
+      } catch (error) {
+        console.log(error, "error")
+        
+      }
+    }
+  };
 
 
   return (
